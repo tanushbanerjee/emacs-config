@@ -1,0 +1,128 @@
+cp init.el init-old.el
+ls
+cd
+ls
+clear;neofetch
+ls
+ls
+clear
+l
+ls
+cd
+clear
+ls
+cd 
+ls
+cd 
+ls
+cd fl
+ls
+cd dox
+ls
+cat Er
+s
+ls
+dired
+dired .
+cd
+clear
+cd fl
+cd repos
+ls
+cd latex-shortcuts-vim/
+ls
+emacs --version
+cd
+killall emacs
+ls
+cd .emacs.d/
+find-file Config.porg
+find-file Config.org
+ls
+cd fl
+cd
+clear
+cd .emacs.d/
+ls
+touch autostart
+find-file autostart
+chmod +x autostart
+shutdown now
+nmcli device wifi list
+nmcli device wifi connect sumitwifi
+ls
+mkdir c-mode
+cd c-mode/
+ls
+nvim tem.yasnippet
+ls
+cd c-mode
+find-file tem.yasnippet
+ls
+nmcli device wifi list
+nmcli device wifi connect sumitwifi
+ls
+find-file autostart
+ls
+clear
+ls
+cd
+ls
+cd Downloads
+ls
+ls -la
+cd ..
+ls
+rm -rf Downloads/
+ls
+cd .fl
+ls
+cd fl
+lls
+ls
+dired .
+shutdown now
+ls
+cd fl
+ls
+cd dl
+ls
+unzip 15\ for\ beginners\ -\ CLEAR.zip 
+ls
+cp 15\ for\ beginners\ -\ CLEAR/ ~/.minecraft/saves/
+cp -r 15\ for\ beginners\ -\ CLEAR/ ~/.minecraft/saves/
+exit
+shutdown now
+ls
+cd fl
+ls
+cd dox
+ls
+cd pms-notes/
+ls
+zathura sst1.pdf 
+zathura datesheet-pt1.pdf 
+zathura sst2
+zathura sst2.pdf 
+ls
+cd fl
+ls
+cd dox
+ls
+cd pms-notes/
+ls
+zathura sst2.pdf 
+zathura datesheet-pt1.pdf 
+ls
+cd fl
+ls
+cd dvdburn/
+ls
+cd burn
+l
+ls
+cd
+ls
+find-file Special-Assembly.org 
+sudo eject /dev/sdc
+exit

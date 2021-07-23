@@ -1,0 +1,138 @@
+* window management
+** exwm configuration
+*** exwm-update-class
+#+begin_src emacs-lisp
+  (defun tb/exwm-update-class ()
+    (exwm-workspace-rename-buffer exwm-class-name))
+
+#+end_src
+*** exwm-update-title
+ #+begin_src emacs-lisp
+(defun tb/exwm-update-title ()
+  (pcase exwm-class-name
+    ("B" (exwm-workspace-rename-buffer (format "Brave-browser: %s" exwm-title)))))
+ #+end_src
+*** exwm-configure-window-by-class
+    #+begin_src emacs-lisp
+      (defun efs/configure-window-by-class ()
+	(interactive)
+	(pcase exwm-class-name
+	  ("Brave-browser" (exwm-workspace-move-window 0))))
+    #+end_src
+*** exwm init hook
+    #+begin_src emacs-lisp
+      (defun tb/exwm-init-hook ()
+	;; Make workspace 1 be the one where we land at startup
+	(exwm-workspace-switch-create 1)
+
+	;; Open eshell by default
+	;; (eshell)
+
+	;; Show the time and date in modeline
+	(setq display-time-day-and-date t)
+	(display-time-mode 1))
+    #+end_src
+*** exwm package installation
+#+begin_src emacs-lisp
+  (use-package exwm
+    :config
+    ;; Set the default number of workspaces
+    (setq exwm-workspace-number 5)
+    ;; When window "class" updates, use it to set the buffer name
+    (add-hook 'exwm-update-class-hook #'tb/exwm-update-class)
+    ;; When EmacsWM starts up, do some extra configuration
+    (add-hook 'exwm-init-hook #'tb/exwm-init-hook)
+    ;; Update title hook
+    (add-hook 'exwm-update-title-hook #'tb/exwm-update-title)
+    ;; Configure windows as they're created
+    (add-hook 'exwm-manage-finish-hook #'efs/configure-window-by-class)
+    ;; Set the screen resolution (update this to be the correct resolution for your screen!)
+#+end_src
+*** exwm-randr for resolution
+#+begin_src emacs-lisp
+  (require 'exwm-randr)
+  (exwm-randr-enable)
+  ;; (start-process-shell-command "xrandr" nil "xrandr --output Virtual-1 --primary --mode 2048x1152 --pos 0x0 --rotate normal")
+#+end_src
+*** exwm-systemtray for enabling systemtray
+#+begin_src emacs-lisp
+  ;; Load the system tray before exwm-init
+  (require 'exwm-systemtray)
+  (setq exwm-systemtray-height 32)
+  (exwm-systemtray-enable)
+
+#+end_src
+*** keybindings
+#+begin_src emacs-lisp
+  ;; These keys should always pass through to Emacs
+  (setq exwm-input-prefix-keys
+    '(?\C-x
+      ?\C-u
+      ?\C-h
+      ?\M-x
+      ?\M-`
+      ?\M-&
+      ?\M-:
+      ?\C-\M-j  ;; Buffer list
+      ?\C-\ ))  ;; Ctrl+Space
+
+  ;; Ctrl+Q will enable the next key to be sent directly
+  (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+
+  ;; Set up global key bindings.  These always work, no matter the input state!
+  ;; Keep in mind that changing this list after EXWM initializes has no effect.
+  (setq exwm-input-global-keys
+	`(
+	  ;; Reset to line-mode (C-c C-k switches to char-mode via exwm-input-release-keyboard)
+	  ([?\s-r] . exwm-reset)
+
+	  ;; Move between windows
+	  ([s-left] . windmove-left)
+	  ([s-right] . windmove-right)
+	  ([s-up] . windmove-up)
+	  ([s-down] . windmove-down)
+	  ;; Move between windows
+	  ([s-h] . windmove-left)
+	  ([s-l] . windmove-right)
+	  ([s-k] . windmove-up)
+	  ([s-j] . windmove-down)
+
+	  ;; Launch applications via shell command
+	  ([?\s-&] . (lambda (command)
+		       (interactive (list (read-shell-command "$ ")))
+		       (start-process-shell-command command nil command)))
+
+	  ;; Switch workspace
+	  ([?\s-w] . exwm-workspace-switch)
+	  ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
+
+	  ;; 's-N': Switch to certain workspace with Super (Win) plus a number key (0 - 9)
+	  ,@(mapcar (lambda (i)
+		      `(,(kbd (format "s-%d" i)) .
+			(lambda ()
+			  (interactive)
+			  (exwm-workspace-switch-create ,i))))
+		    (number-sequence 0 9))))
+
+    (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
+    (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
+    (exwm-enable))
+#+end_src
+
+*** run in background
+    function to run things in the background
+    #+begin_src emacs-lisp
+  (defun efs/run-in-background (command)
+    (let ((command-parts (split-string command "[ ]+")))
+      (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
+    #+end_src
+*** autostart
+    #+begin_src emacs-lisp
+	    (defun tb/autostart ()
+	      (interactive)
+	      (start-process-shell-command
+	         "autostart" nil "~/.emacs.d/autostart"))
+
+	    (tb/autostart)
+    #+end_src
+

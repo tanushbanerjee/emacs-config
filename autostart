@@ -1,0 +1,3 @@
+#!/bin/sh
+~/fl/scripts/remaps
+nitrogen --restore
