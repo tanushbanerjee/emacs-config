@@ -1,1 +1,1 @@
-("~/fl/repos/latex-shortcuts-vim/" "~/.fzf/" "~/fl/utls/dwm/" "~/.emacs.d/elpa/xelb-0.18/" "~/.emacs.d/elpa/vterm-20210618.1922/")
+("~/.emacs.d/" "~/fl/repos/latex-shortcuts-vim/" "~/.fzf/" "~/fl/utls/dwm/" "~/.emacs.d/elpa/xelb-0.18/" "~/.emacs.d/elpa/vterm-20210618.1922/")
